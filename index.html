@@ -269,12 +269,6 @@
         .message-bubble p:last-child {
             margin-bottom: 0;
         }
-        
-        .message-bubble br {
-            display: block;
-            margin: 8px 0;
-            content: "";
-        }
 
         .typing-indicator-minimal {
             display: flex;
@@ -433,11 +427,13 @@
 
 <script>
     // ============================================
-    // RostOps | AI Бизнес-ассистент
-    // AI НИКОГДА НЕ ПИШЕТ КОД — только текстовые ответы
+    // RostOps | SambaNova API
+    // 🔑 ВСТАВЬ СВОЙ КЛЮЧ САМБАНОВА СЮДА:
     // ============================================
     
-    const API_KEY = "6329c000-1e83-4704-8432-b11205631d84";
+    // ⚠️ ВСТАВЬ СВОЙ РАБОЧИЙ КЛЮЧ SambaNova вместо этого:
+    const API_KEY = "d19201e3-cbd5-447b-bdb1-16c97be11504";
+    
     const API_URL = "https://api.sambanova.ai/v1/chat/completions";
     
     const SYSTEM_PROMPT = `Ты — AI-ассистент RostOps, персональный бизнес-консультант по внедрению искусственного интеллекта и автоматизации.
@@ -451,21 +447,14 @@
 - MLOps и облачные платформы
 - Обучение AI-компетенциям команд
 
-ВАЖНЕЙШЕЕ ПРАВИЛО:
-- НИКОГДА НЕ ПИШИ КОД. Вообще никакой код. Ни в каких ситуациях.
-- Даже если пользователь просит код — вежливо откажись и предложи текстовое описание решения.
-- Отвечай только обычным текстом, без блоков кода, без примеров кода, без инлайн-кода.
-- Используй только обычный текст, жирное выделение и списки.
+ВАЖНОЕ ПРАВИЛО:
+- НИКОГДА НЕ ПИШИ КОД. Только текст, жирное выделение и списки.
 
 Остальные правила:
 - Отвечай ТОЛЬКО на русском языке, дружелюбно и профессионально
 - Используй **жирный текст** для выделения важного
-- Разбивай ответ на абзацы и списки для удобства чтения
 - Всегда представляйся как ассистент RostOps
-- Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилот от 250 000 ₽
-- Контакты: hello@rostops.ai
-
-Твоя цель — помогать клиентам с AI-решениями для бизнеса, используя только текст.`;
+- Контакты: hello@rostops.ai`;
 
     let conversationHistory = [];
 
@@ -473,62 +462,45 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // Функция форматирования — только текст, без кода
     function formatMarkdown(text) {
         let safe = text;
-        
-        // Экранирование HTML
         safe = safe.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
         });
-        
-        // Жирный текст
         safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         safe = safe.replace(/__(.*?)__/g, '<strong>$1</strong>');
-        
-        // Курсив
         safe = safe.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-        
-        // Удаляем любые блоки кода, если вдруг появятся
         safe = safe.replace(/```[\s\S]*?```/g, '');
         safe = safe.replace(/`([^`]+)`/g, '$1');
         
-        // Обработка списков и абзацев
         const lines = safe.split('\n');
         let inList = false;
-        let listType = null;
         let processedLines = [];
         
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i];
-            
             if (line.match(/^[\s]*[•\-*]\s/)) {
                 if (!inList) {
                     processedLines.push('<ul style="margin: 12px 0 12px 24px;">');
                     inList = true;
-                    listType = 'ul';
                 }
                 const content = line.replace(/^[\s]*[•\-*]\s/, '');
                 processedLines.push(`<li style="margin: 6px 0;">${content}</li>`);
-            } 
-            else if (line.match(/^[\s]*\d+\.\s/)) {
-                if (!inList || listType !== 'ol') {
+            } else if (line.match(/^[\s]*\d+\.\s/)) {
+                if (!inList) {
                     if (inList) processedLines.push('</ul>');
                     processedLines.push('<ol style="margin: 12px 0 12px 24px;">');
                     inList = true;
-                    listType = 'ol';
                 }
                 const content = line.replace(/^[\s]*\d+\.\s/, '');
                 processedLines.push(`<li style="margin: 6px 0;">${content}</li>`);
-            }
-            else {
+            } else {
                 if (inList) {
-                    processedLines.push(listType === 'ul' ? '</ul>' : '</ol>');
+                    processedLines.push('</ul>');
                     inList = false;
-                    listType = null;
                 }
                 if (line.trim() === '') {
                     processedLines.push('<br>');
@@ -537,15 +509,8 @@
                 }
             }
         }
-        
-        if (inList) {
-            processedLines.push(listType === 'ul' ? '</ul>' : '</ol>');
-        }
-        
-        let result = processedLines.join('');
-        result = result.replace(/<p style="margin: 12px 0;"><\/p>/g, '');
-        
-        return result;
+        if (inList) processedLines.push('</ul>');
+        return processedLines.join('').replace(/<p style="margin: 12px 0;"><\/p>/g, '');
     }
 
     function addFormattedMessage(role, text) {
@@ -584,12 +549,7 @@
         messageDiv.appendChild(icon);
         messageDiv.appendChild(bubbleWrapper);
         container.appendChild(messageDiv);
-        
         container.scrollTop = container.scrollHeight;
-        messageDiv.style.animation = 'none';
-        messageDiv.offsetHeight;
-        messageDiv.style.animation = 'messageIn 0.3s ease-out';
-        
         return messageDiv;
     }
 
@@ -625,6 +585,10 @@
     }
 
     async function callAIAPI(userMessage, history) {
+        if (!API_KEY || API_KEY === "d19201e3-cbd5-447b-bdb1-16c97be11504") {
+            return "⚠️ **API ключ не настроен!**\n\n🔑 Чтобы получить бесплатный ключ SambaNova:\n\n1. Перейди на [cloud.sambanova.ai](https://cloud.sambanova.ai)\n2. Зарегистрируйся (бесплатно)\n3. Создай API Key\n4. Скопируй ключ и вставь его в код\n\nПосле этого чат заработает! 🚀";
+        }
+        
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
             ...history.slice(-12).map(msg => ({
@@ -651,12 +615,16 @@
             });
 
             if (!response.ok) {
-                return `⚠️ **Ошибка API**\n\nНе удалось подключиться. Попробуйте снова.`;
+                const errorText = await response.text();
+                console.error('API Error:', errorText);
+                if (response.status === 401) {
+                    return "❌ **Неверный API ключ!**\n\nКлюч SambaNova не подходит. Получи новый ключ на [cloud.sambanova.ai](https://cloud.sambanova.ai)";
+                }
+                return `⚠️ **Ошибка API (${response.status})**\n\nПроверь интернет и попробуй снова.`;
             }
 
             const data = await response.json();
             return data.choices?.[0]?.message?.content || "❌ Пустой ответ от AI";
-            
         } catch (error) {
             console.error('API call failed:', error);
             return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение.";
@@ -708,7 +676,7 @@
 • Интегрировать AI в CRM/ERP
 • Оценить стоимость и этапы внедрения
 
-Просто напишите, какая задача вас интересует — я отвечу текстом, без кода.
+Просто напишите, какая задача вас интересует.
 
 Чем могу быть полезен сегодня? 🚀`;
         
