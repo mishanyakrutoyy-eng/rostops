@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>RostOps | AI Бизнес-ассистент</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <!-- highlight.js с темой GitHub (светлая, минималистичная) -->
+    <!-- Google Fonts: Outfit + Space Grotesk для акцентов -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -243,7 +243,7 @@
             margin-right: 4px;
         }
 
-        /* Жирный текст */
+        /* Жирный текст в сообщениях */
         .message-bubble strong, .message-bubble b {
             font-weight: 700;
             color: #1f2937;
@@ -253,7 +253,7 @@
             color: white;
         }
         
-        /* Списки */
+        /* Стили для списков */
         .message-bubble ul, .message-bubble ol {
             margin: 8px 0 8px 20px;
         }
@@ -261,30 +261,31 @@
             margin: 4px 0;
         }
         
-        /* КРАСИВЫЙ КОДОВЫЙ БЛОК — с сохранением форматирования */
+        /* МИНИМАЛИСТИЧНЫЙ И КРАСИВЫЙ КОДОВЫЙ БЛОК */
         .code-block-wrapper {
             margin: 14px 0;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            background: #f6f8fa;
-            border: 1px solid #e1e4e8;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
             position: relative;
+            transition: all 0.2s ease;
         }
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 6px 14px;
-            background: #f1f3f5;
-            border-bottom: 1px solid #e1e4e8;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
             font-size: 0.7rem;
-            color: #57606a;
+            color: #6c757d;
             font-family: 'Space Grotesk', monospace;
         }
         .copy-btn {
             background: transparent;
             border: none;
-            color: #57606a;
+            color: #6c757d;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.65rem;
@@ -296,33 +297,27 @@
         }
         .copy-btn:hover {
             background: #e9ecef;
-            color: #1f2937;
+            color: #212529;
         }
         .code-block-wrapper pre {
             margin: 0;
-            padding: 16px;
+            padding: 14px;
             overflow-x: auto;
-            background: #f6f8fa;
-            white-space: pre;
-            font-family: 'Fira Code', 'Space Grotesk', monospace;
-            font-size: 0.8rem;
-            line-height: 1.5;
+            background: #ffffff;
         }
         .code-block-wrapper code {
-            font-family: 'Fira Code', 'Space Grotesk', monospace;
+            font-family: 'Space Grotesk', 'Fira Code', monospace;
             font-size: 0.8rem;
             line-height: 1.5;
-            color: #24292e;
-            white-space: pre;
-            display: block;
+            color: #1e293b;
         }
         
-        /* Инлайн-код */
+        /* Инлайн-код — минималистичный */
         .message-bubble code:not(pre code) {
             background: #f1f3f5;
             padding: 2px 6px;
             border-radius: 8px;
-            font-family: 'Fira Code', monospace;
+            font-family: 'Space Grotesk', monospace;
             font-size: 0.85rem;
             color: #d63384;
         }
@@ -450,10 +445,6 @@
             .message-bubble { padding: 10px 14px; font-size: 0.88rem; }
             .input-area { padding: 12px 12px 16px 12px; }
             #sendBtn { width: 42px; height: 42px; }
-            .code-block-wrapper pre {
-                padding: 12px;
-                font-size: 0.7rem;
-            }
         }
 
         @media (min-width: 641px) and (max-width: 900px) {
@@ -498,8 +489,8 @@
 <script>
     // ============================================
     // RostOps | AI Бизнес-ассистент
-    // Модель: RostOps-1.1
-    // Код отображается КРАСИВО с сохранением форматирования
+    // Модель: RostOps-1.1 (через SambaNova API)
+    // AI НЕ пишет код без явной просьбы пользователя
     // ============================================
     
     const API_KEY = "673c4cc1-0f8e-4851-bce3-d090a39168d5";
@@ -518,7 +509,8 @@
 
 ВАЖНОЕ ПРАВИЛО:
 - НЕ пиши код, если пользователь прямо не попросил об этом (например: "напиши код", "покажи пример кода", "дай код", "пример реализации")
-- Если пользователь просит код — покажи его в красивом форматировании с тройными кавычками и указанием языка
+- Если пользователь не просит код — отвечай обычным текстом, без примеров кода
+- Если пользователь просит код — тогда покажи его в красивом форматировании
 
 Остальные правила:
 - Отвечай ТОЛЬКО на русском языке, дружелюбно и профессионально
@@ -526,7 +518,9 @@
 - Разбивай ответ на абзацы и списки для удобства чтения
 - Всегда представляйся как ассистент RostOps
 - Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилот от 250 000 ₽
-- Контакты: hello@rostops.ai`;
+- Контакты: hello@rostops.ai
+
+Твоя цель — помогать клиентам с AI-решениями для бизнеса.`;
 
     let conversationHistory = [];
 
@@ -534,11 +528,10 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // Функция форматирования — с ПРАВИЛЬНЫМ сохранением пробелов и отступов в коде
+    // Функция форматирования — жирный текст, списки, абзацы, код (только если есть)
     function formatMarkdown(text) {
         let safe = text;
         
-        // Экранирование HTML (но с сохранением наших тегов)
         safe = safe.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
@@ -553,18 +546,22 @@
         // Курсив
         safe = safe.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
         
-        // БЛОКИ КОДА — с сохранением форматирования (white-space: pre)
+        // Блоки кода
         const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
         safe = safe.replace(codeBlockRegex, function(match, lang, code) {
             const language = lang || 'plaintext';
-            // НЕ экранируем пробелы и переносы строк в коде
-            const encodedCode = code; // сохраняем как есть
+            const encodedCode = code.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
             return `<div class="code-block-wrapper">
                         <div class="code-header">
                             <span>${language}</span>
                             <button class="copy-btn" onclick="copyCodeBlock(this)"><i class="far fa-copy"></i> Копировать</button>
                         </div>
-                        <pre><code class="language-${language}">${escapeHtml(encodedCode)}</code></pre>
+                        <pre><code class="language-${language}">${encodedCode}</code></pre>
                     </div>`;
         });
         
@@ -607,10 +604,8 @@
                 }
                 if (line.trim() === '') {
                     processedLines.push('<br>');
-                } else if (!line.includes('<div class="code-block-wrapper">')) {
-                    processedLines.push(`<p style="margin: 8px 0;">${line}</p>`);
                 } else {
-                    processedLines.push(line);
+                    processedLines.push(`<p style="margin: 8px 0;">${line}</p>`);
                 }
             }
         }
@@ -623,15 +618,6 @@
         result = result.replace(/<p style="margin: 8px 0;"><\/p>/g, '');
         
         return result;
-    }
-    
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
     }
 
     window.copyCodeBlock = function(btn) {
@@ -649,6 +635,7 @@
         });
     };
 
+    // Добавление сообщения с форматированием
     function addFormattedMessage(role, text) {
         const container = document.getElementById('messagesArea');
         const messageDiv = document.createElement('div');
@@ -686,7 +673,6 @@
         messageDiv.appendChild(bubbleWrapper);
         container.appendChild(messageDiv);
         
-        // Подсветка синтаксиса для всех блоков кода
         document.querySelectorAll('.code-block-wrapper pre code').forEach((block) => {
             hljs.highlightElement(block);
         });
@@ -730,6 +716,7 @@
         }
     }
 
+    // API запрос
     async function callAIAPI(userMessage, history) {
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
@@ -821,16 +808,7 @@
 • Интегрировать AI в CRM/ERP
 • Оценить стоимость и этапы внедрения
 
-**Пример кода (если попросите):**
-
-\`\`\`javascript
-function helloWorld() {
-    console.log("Привет, RostOps!");
-    return "AI помогает бизнесу";
-}
-\`\`\`
-
-Просто напишите, какая задача вас интересует. Если нужен будет пример кода — прямо попросите, я покажу.
+**Просто напишите, какая задача вас интересует.** Если нужен будет пример кода — прямо попросите, я покажу.
 
 Чем могу быть полезен сегодня? 🚀`;
         
