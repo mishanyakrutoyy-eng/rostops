@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>RostOps | AI Консультант</title>
+    <title>RostOps | AI Бизнес-ассистент</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- highlight.js с темой GitHub (светлая, минималистичная) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -15,8 +18,8 @@
         }
 
         body {
-            background: #f5f7fc;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,8 +35,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.03), transparent 50%),
-                        radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.03), transparent 50%);
+            background: radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.02), transparent 50%),
+                        radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.02), transparent 50%);
             pointer-events: none;
         }
 
@@ -44,7 +47,7 @@
             min-height: 540px;
             background: #ffffff;
             border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -88,11 +91,11 @@
         }
 
         .header-text h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.35rem;
+            font-weight: 700;
             letter-spacing: -0.3px;
             color: #111827;
-            font-family: 'Space Grotesk', monospace;
+            font-family: 'Outfit', sans-serif;
         }
 
         .header-text p {
@@ -171,11 +174,11 @@
             align-items: flex-start;
             gap: 10px;
             max-width: 85%;
-            animation: messageIn 0.25s ease-out;
+            animation: messageIn 0.3s ease-out;
         }
 
         @keyframes messageIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -207,9 +210,9 @@
         }
 
         .message-bubble {
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            line-height: 1.45;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            line-height: 1.55;
             border-radius: 20px;
             word-break: break-word;
             font-weight: 400;
@@ -238,6 +241,94 @@
         .user-message .message-time {
             text-align: right;
             margin-right: 4px;
+        }
+
+        /* Жирный текст */
+        .message-bubble strong, .message-bubble b {
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .user-message .message-bubble strong,
+        .user-message .message-bubble b {
+            color: white;
+        }
+        
+        /* Списки */
+        .message-bubble ul, .message-bubble ol {
+            margin: 8px 0 8px 20px;
+        }
+        .message-bubble li {
+            margin: 4px 0;
+        }
+        
+        /* КРАСИВЫЙ КОДОВЫЙ БЛОК — с сохранением форматирования */
+        .code-block-wrapper {
+            margin: 14px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            position: relative;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 14px;
+            background: #f1f3f5;
+            border-bottom: 1px solid #e1e4e8;
+            font-size: 0.7rem;
+            color: #57606a;
+            font-family: 'Space Grotesk', monospace;
+        }
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: #57606a;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copy-btn:hover {
+            background: #e9ecef;
+            color: #1f2937;
+        }
+        .code-block-wrapper pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+            background: #f6f8fa;
+            white-space: pre;
+            font-family: 'Fira Code', 'Space Grotesk', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+        .code-block-wrapper code {
+            font-family: 'Fira Code', 'Space Grotesk', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #24292e;
+            white-space: pre;
+            display: block;
+        }
+        
+        /* Инлайн-код */
+        .message-bubble code:not(pre code) {
+            background: #f1f3f5;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #d63384;
+        }
+        .user-message .message-bubble code:not(pre code) {
+            background: rgba(255,255,255,0.15);
+            color: #ffe0b3;
         }
 
         .typing-indicator-minimal {
@@ -296,7 +387,7 @@
             background: transparent;
             padding: 12px 0;
             font-size: 0.95rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
             color: #111827;
             resize: none;
             outline: none;
@@ -340,10 +431,11 @@
             align-items: center;
             gap: 12px;
             margin-top: 12px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #9ca3af;
             flex-wrap: wrap;
             text-align: center;
+            font-weight: 400;
         }
 
         @media (max-width: 640px) {
@@ -352,12 +444,16 @@
             .chat-header { padding: 16px 16px 12px 16px; }
             .avatar-icon { width: 40px; height: 40px; }
             .avatar-icon i { font-size: 20px; }
-            .header-text h2 { font-size: 1.1rem; }
+            .header-text h2 { font-size: 1.2rem; }
             .messages-area { padding: 16px 12px 12px 12px; gap: 16px; }
             .message { max-width: 92%; }
             .message-bubble { padding: 10px 14px; font-size: 0.88rem; }
             .input-area { padding: 12px 12px 16px 12px; }
             #sendBtn { width: 42px; height: 42px; }
+            .code-block-wrapper pre {
+                padding: 12px;
+                font-size: 0.7rem;
+            }
         }
 
         @media (min-width: 641px) and (max-width: 900px) {
@@ -374,7 +470,7 @@
             <i class="fas fa-brain"></i>
         </div>
         <div class="header-text">
-            <h2>RostOps <span style="font-size: 0.7rem;">| AI Consultant</span></h2>
+            <h2>RostOps <span style="font-size: 0.7rem; font-weight: 500;">| AI Business Assistant</span></h2>
             <p>
                 <span class="server-badge"><i class="fas fa-server"></i> Test Server 1.823.510</span>
                 <span><i class="fas fa-microchip"></i> RostOps-1.1</span>
@@ -394,41 +490,43 @@
             <button id="sendBtn"><i class="fas fa-arrow-up"></i></button>
         </div>
         <div class="info-footer">
-            <i class="fas fa-robot"></i> Ваш личный ии-помощник в любой сфере бизнеса
-            <i class="fas fa-bolt"></i> RostOps | 06.04.2026
+            <i class="fas fa-robot"></i> RostOps — твой личный AI-ассистент в сфере бизнеса
         </div>
     </div>
 </div>
 
 <script>
     // ============================================
-    // RostOps | SAMBANOVA (FULL ORIGINAL FIX)
+    // RostOps | AI Бизнес-ассистент
+    // Модель: RostOps-1.1
+    // Код отображается КРАСИВО с сохранением форматирования
     // ============================================
     
     const API_KEY = "673c4cc1-0f8e-4851-bce3-d090a39168d5";
     const API_URL = "https://api.sambanova.ai/v1/chat/completions";
     
-    const SYSTEM_PROMPT = `Ты — AI-консультант компании RostOps, эксперт по внедрению искусственного интеллекта в бизнес.
-    
-Компания RostOps предоставляет полный спектр AI-решений:
-- 🎯 Стратегия AI-трансформации и аудит бизнес-процессов
-- 🤖 Кастомные LLM-агенты, RAG-чатботы с интеграцией в Telegram, сайты, CRM
-- 📊 Предиктивная аналитика (прогнозы продаж, оттока клиентов, оптимизация запасов)
-- ⚙️ Интеграция AI в CRM/ERP (1С, SAP, Битрикс24, Salesforce)
-- 👁️ Компьютерное зрение для контроля качества, безопасности, видеоаналитики
-- ☁️ MLOps и облачные платформы (AWS SageMaker, Azure AI, GCP)
-- 🎓 Обучение AI-компетенциям команд и технические воркшопы
+    const SYSTEM_PROMPT = `Ты — AI-ассистент RostOps, персональный бизнес-консультант по внедрению искусственного интеллекта и автоматизации.
 
-Правила общения:
+Компания RostOps предоставляет:
+- Стратегия AI-трансформации и аудит процессов
+- Кастомные LLM-агенты, чатботы (Telegram, сайты, CRM)
+- Предиктивная аналитика (прогнозы продаж, оттока, оптимизация)
+- Интеграция AI в CRM/ERP (1С, SAP, Битрикс24, Salesforce)
+- Компьютерное зрение для контроля качества и безопасности
+- MLOps и облачные платформы
+- Обучение AI-компетенциям команд
+
+ВАЖНОЕ ПРАВИЛО:
+- НЕ пиши код, если пользователь прямо не попросил об этом (например: "напиши код", "покажи пример кода", "дай код", "пример реализации")
+- Если пользователь просит код — покажи его в красивом форматировании с тройными кавычками и указанием языка
+
+Остальные правила:
 - Отвечай ТОЛЬКО на русском языке, дружелюбно и профессионально
-- Всегда представляйся как консультант RostOps
-- Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилотный проект от 250 000 рублей
-- Контакты компании: hello@rostops.ai
-- Будь полезным, предлагай конкретные решения под задачи клиента
-- Используй умеренно эмодзи для дружелюбного тона
-- Если вопрос не связан с AI/бизнесом — вежливо направь в русло внедрения AI
-
-Твоя цель — помочь клиенту подобрать оптимальное AI-решение для его бизнеса.`;
+- Используй **жирный текст** для выделения важного
+- Разбивай ответ на абзацы и списки для удобства чтения
+- Всегда представляйся как ассистент RostOps
+- Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилот от 250 000 ₽
+- Контакты: hello@rostops.ai`;
 
     let conversationHistory = [];
 
@@ -436,7 +534,122 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    function addMessage(role, text) {
+    // Функция форматирования — с ПРАВИЛЬНЫМ сохранением пробелов и отступов в коде
+    function formatMarkdown(text) {
+        let safe = text;
+        
+        // Экранирование HTML (но с сохранением наших тегов)
+        safe = safe.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+        
+        // Жирный текст
+        safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        safe = safe.replace(/__(.*?)__/g, '<strong>$1</strong>');
+        
+        // Курсив
+        safe = safe.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+        
+        // БЛОКИ КОДА — с сохранением форматирования (white-space: pre)
+        const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
+        safe = safe.replace(codeBlockRegex, function(match, lang, code) {
+            const language = lang || 'plaintext';
+            // НЕ экранируем пробелы и переносы строк в коде
+            const encodedCode = code; // сохраняем как есть
+            return `<div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>${language}</span>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)"><i class="far fa-copy"></i> Копировать</button>
+                        </div>
+                        <pre><code class="language-${language}">${escapeHtml(encodedCode)}</code></pre>
+                    </div>`;
+        });
+        
+        // Инлайн-код
+        safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Списки
+        const lines = safe.split('\n');
+        let inList = false;
+        let listType = null;
+        let processedLines = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+            
+            if (line.match(/^[\s]*[•\-*]\s/)) {
+                if (!inList) {
+                    processedLines.push('<ul style="margin: 8px 0 8px 20px;">');
+                    inList = true;
+                    listType = 'ul';
+                }
+                const content = line.replace(/^[\s]*[•\-*]\s/, '');
+                processedLines.push(`<li style="margin: 4px 0;">${content}</li>`);
+            } 
+            else if (line.match(/^[\s]*\d+\.\s/)) {
+                if (!inList || listType !== 'ol') {
+                    if (inList) processedLines.push('</ul>');
+                    processedLines.push('<ol style="margin: 8px 0 8px 20px;">');
+                    inList = true;
+                    listType = 'ol';
+                }
+                const content = line.replace(/^[\s]*\d+\.\s/, '');
+                processedLines.push(`<li style="margin: 4px 0;">${content}</li>`);
+            }
+            else {
+                if (inList) {
+                    processedLines.push(listType === 'ul' ? '</ul>' : '</ol>');
+                    inList = false;
+                    listType = null;
+                }
+                if (line.trim() === '') {
+                    processedLines.push('<br>');
+                } else if (!line.includes('<div class="code-block-wrapper">')) {
+                    processedLines.push(`<p style="margin: 8px 0;">${line}</p>`);
+                } else {
+                    processedLines.push(line);
+                }
+            }
+        }
+        
+        if (inList) {
+            processedLines.push(listType === 'ul' ? '</ul>' : '</ol>');
+        }
+        
+        let result = processedLines.join('');
+        result = result.replace(/<p style="margin: 8px 0;"><\/p>/g, '');
+        
+        return result;
+    }
+    
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    window.copyCodeBlock = function(btn) {
+        const wrapper = btn.closest('.code-block-wrapper');
+        const codeElement = wrapper.querySelector('code');
+        const text = codeElement.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Готово!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 1500);
+        }).catch(() => {
+            alert('Не удалось скопировать');
+        });
+    };
+
+    function addFormattedMessage(role, text) {
         const container = document.getElementById('messagesArea');
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message');
@@ -461,8 +674,8 @@
 
         const bubble = document.createElement('div');
         bubble.classList.add('message-bubble');
-        bubble.innerText = text;
-
+        bubble.innerHTML = formatMarkdown(text);
+        
         const timeSpan = document.createElement('div');
         timeSpan.classList.add('message-time');
         timeSpan.innerHTML = `<i class="far fa-clock"></i> ${getTime()}`;
@@ -472,7 +685,17 @@
         messageDiv.appendChild(icon);
         messageDiv.appendChild(bubbleWrapper);
         container.appendChild(messageDiv);
+        
+        // Подсветка синтаксиса для всех блоков кода
+        document.querySelectorAll('.code-block-wrapper pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+        
         container.scrollTop = container.scrollHeight;
+        messageDiv.style.animation = 'none';
+        messageDiv.offsetHeight;
+        messageDiv.style.animation = 'messageIn 0.3s ease-out';
+        
         return messageDiv;
     }
 
@@ -491,7 +714,7 @@
         wrapper.style.flexDirection = 'column';
         const typingBlock = document.createElement('div');
         typingBlock.className = 'typing-indicator-minimal';
-        typingBlock.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span><span style="margin-left:6px; font-size:0.7rem;">AI анализирует...</span>';
+        typingBlock.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span><span style="margin-left:6px; font-size:0.7rem;">RostOps думает...</span>';
         wrapper.appendChild(typingBlock);
         div.appendChild(icon);
         div.appendChild(wrapper);
@@ -507,7 +730,6 @@
         }
     }
 
-    // 🔥 ТОЛЬКО ЭТА ЧАСТЬ ПЕРЕПИСАНА ПОД SAMBANOVA
     async function callAIAPI(userMessage, history) {
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
@@ -528,28 +750,30 @@
                 body: JSON.stringify({
                     model: "Meta-Llama-3.1-8B-Instruct",
                     messages: messages,
-                    temperature: 0.75,
-                    max_tokens: 600
+                    temperature: 0.7,
+                    max_tokens: 1000,
+                    stream: false
                 })
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                console.error('API Error:', data);
-                return "❌ Ошибка API: " + JSON.stringify(data);
+                const errorText = await response.text();
+                console.error('API Error:', errorText);
+                return `⚠️ **Ошибка API**\n\nНе удалось подключиться. Проверьте соединение и попробуйте снова.`;
             }
 
+            const data = await response.json();
+            
+            if (data.error) {
+                return `❌ **Ошибка:** ${data.error.message || 'Неизвестная ошибка'}`;
+            }
+            
             return data.choices?.[0]?.message?.content || "❌ Пустой ответ от AI";
             
         } catch (error) {
             console.error('API call failed:', error);
-            return "⚠️ Ошибка подключения (возможно CORS SambaNova)";
+            return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение и попробуйте ещё раз.";
         }
-    }
-
-    async function getAIResponse(userMessage, history) {
-        return await callAIAPI(userMessage, history);
     }
 
     async function sendMessage() {
@@ -560,17 +784,16 @@
         input.value = '';
         input.style.height = 'auto';
 
-        addMessage('user', text);
+        addFormattedMessage('user', text);
         conversationHistory.push({ role: 'user', content: text });
 
         showTyping();
-        
         await new Promise(r => setTimeout(r, 200));
         
-        const reply = await getAIResponse(text, conversationHistory);
+        const reply = await callAIAPI(text, conversationHistory);
         hideTyping();
 
-        addMessage('assistant', reply);
+        addFormattedMessage('assistant', reply);
         conversationHistory.push({ role: 'assistant', content: reply });
 
         if (conversationHistory.length > 24) {
@@ -588,28 +811,30 @@
         const container = document.getElementById('messagesArea');
         container.innerHTML = '';
 
-        const welcomeMsg = "Приветствую! 👋 Я AI-консультант RostOps. Помогаю бизнесу внедрять искусственный интеллект: от стратегии до готовых решений. Расскажите о вашем проекте — предложу оптимальный подход.";
-        
-        const welcomeDiv = document.createElement('div');
-        welcomeDiv.classList.add('message', 'assistant-message');
-        const icon = document.createElement('div');
-        icon.classList.add('message-icon', 'assistant-icon');
-        icon.innerHTML = '<i class="fas fa-robot"></i>';
-        const bubbleWrap = document.createElement('div');
-        bubbleWrap.style.display = 'flex';
-        bubbleWrap.style.flexDirection = 'column';
-        const bubble = document.createElement('div');
-        bubble.classList.add('message-bubble');
-        bubble.innerText = welcomeMsg;
-        const timeSpan = document.createElement('div');
-        timeSpan.classList.add('message-time');
-        timeSpan.innerHTML = `<i class="far fa-clock"></i> ${getTime()}`;
-        bubbleWrap.appendChild(bubble);
-        bubbleWrap.appendChild(timeSpan);
-        welcomeDiv.appendChild(icon);
-        welcomeDiv.appendChild(bubbleWrap);
-        container.appendChild(welcomeDiv);
+        const welcomeMsg = `**Добро пожаловать в RostOps!** 👋
 
+Я **RostOps** — твой персональный AI-ассистент в сфере бизнеса. Помогаю компаниям внедрять искусственный интеллект и автоматизацию.
+
+**С чем я могу помочь:**
+• Разработать стратегию AI-трансформации
+• Подобрать решение для чат-ботов или аналитики
+• Интегрировать AI в CRM/ERP
+• Оценить стоимость и этапы внедрения
+
+**Пример кода (если попросите):**
+
+\`\`\`javascript
+function helloWorld() {
+    console.log("Привет, RostOps!");
+    return "AI помогает бизнесу";
+}
+\`\`\`
+
+Просто напишите, какая задача вас интересует. Если нужен будет пример кода — прямо попросите, я покажу.
+
+Чем могу быть полезен сегодня? 🚀`;
+        
+        addFormattedMessage('assistant', welcomeMsg);
         conversationHistory = [{ role: 'assistant', content: welcomeMsg }];
 
         const sendBtn = document.getElementById('sendBtn');
@@ -630,8 +855,10 @@
             }
         }, 100);
 
-        console.log('SambaNova подключена');
+        console.log('RostOps AI ассистент запущен');
     }
 
     init();
 </script>
+</body>
+</html>
