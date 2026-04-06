@@ -402,12 +402,11 @@
 
 <script>
     // ============================================
-    // RostOps | РЕАЛЬНЫЙ API (OpenRouter)
-    // API ключ вставлен, всё работает!
+    // RostOps | SAMBANOVA (FULL ORIGINAL FIX)
     // ============================================
     
     const API_KEY = "673c4cc1-0f8e-4851-bce3-d090a39168d5";
-    const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+    const API_URL = "https://api.sambanova.ai/v1/chat/completions";
     
     const SYSTEM_PROMPT = `Ты — AI-консультант компании RostOps, эксперт по внедрению искусственного интеллекта в бизнес.
     
@@ -508,7 +507,7 @@
         }
     }
 
-    // Функция запроса к реальному API OpenRouter
+    // 🔥 ТОЛЬКО ЭТА ЧАСТЬ ПЕРЕПИСАНА ПОД SAMBANOVA
     async function callAIAPI(userMessage, history) {
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
@@ -524,30 +523,28 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`,
-                    'HTTP-Referer': window.location.origin,
-                    'X-Title': 'RostOps AI Consultant'
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: "openai/gpt-3.5-turbo",
+                    model: "Meta-Llama-3.1-8B-Instruct",
                     messages: messages,
                     temperature: 0.75,
                     max_tokens: 600
                 })
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error('API Error:', errorData);
-                throw new Error(`API error: ${response.status}`);
+                console.error('API Error:', data);
+                return "❌ Ошибка API: " + JSON.stringify(data);
             }
 
-            const data = await response.json();
-            return data.choices[0].message.content;
+            return data.choices?.[0]?.message?.content || "❌ Пустой ответ от AI";
             
         } catch (error) {
             console.error('API call failed:', error);
-            return "⚠️ Произошла ошибка. Мы в процессе восстановления.";
+            return "⚠️ Ошибка подключения (возможно CORS SambaNova)";
         }
     }
 
@@ -632,12 +629,9 @@
                 userInput.blur();
             }
         }, 100);
-        
-        // Проверка API при старте
-        console.log('API Key loaded, ready to chat!');
+
+        console.log('SambaNova подключена');
     }
 
     init();
 </script>
-</body>
-</html>
