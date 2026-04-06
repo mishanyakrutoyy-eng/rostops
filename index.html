@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>RostOps | AI Бизнес-ассистент</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Outfit + Space Grotesk для акцентов -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -152,7 +149,7 @@
             padding: 20px 20px 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 20px;
             background: #ffffff;
             scroll-behavior: smooth;
         }
@@ -210,9 +207,9 @@
         }
 
         .message-bubble {
-            padding: 12px 18px;
-            font-size: 0.95rem;
-            line-height: 1.55;
+            padding: 14px 20px;
+            font-size: 1rem;
+            line-height: 1.65;
             border-radius: 20px;
             word-break: break-word;
             font-weight: 400;
@@ -234,7 +231,7 @@
         .message-time {
             font-size: 0.6rem;
             color: #9ca3af;
-            margin-top: 5px;
+            margin-top: 6px;
             margin-left: 8px;
         }
 
@@ -243,7 +240,6 @@
             margin-right: 4px;
         }
 
-        /* Жирный текст в сообщениях */
         .message-bubble strong, .message-bubble b {
             font-weight: 700;
             color: #1f2937;
@@ -253,77 +249,31 @@
             color: white;
         }
         
-        /* Стили для списков */
         .message-bubble ul, .message-bubble ol {
-            margin: 8px 0 8px 20px;
+            margin: 12px 0 12px 24px;
         }
         .message-bubble li {
-            margin: 4px 0;
+            margin: 6px 0;
+            line-height: 1.6;
         }
         
-        /* МИНИМАЛИСТИЧНЫЙ И КРАСИВЫЙ КОДОВЫЙ БЛОК */
-        .code-block-wrapper {
-            margin: 14px 0;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #ffffff;
-            border: 1px solid #e9ecef;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 14px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            font-size: 0.7rem;
-            color: #6c757d;
-            font-family: 'Space Grotesk', monospace;
-        }
-        .copy-btn {
-            background: transparent;
-            border: none;
-            color: #6c757d;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .copy-btn:hover {
-            background: #e9ecef;
-            color: #212529;
-        }
-        .code-block-wrapper pre {
-            margin: 0;
-            padding: 14px;
-            overflow-x: auto;
-            background: #ffffff;
-        }
-        .code-block-wrapper code {
-            font-family: 'Space Grotesk', 'Fira Code', monospace;
-            font-size: 0.8rem;
-            line-height: 1.5;
-            color: #1e293b;
+        .message-bubble p {
+            margin: 12px 0;
+            line-height: 1.65;
         }
         
-        /* Инлайн-код — минималистичный */
-        .message-bubble code:not(pre code) {
-            background: #f1f3f5;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-family: 'Space Grotesk', monospace;
-            font-size: 0.85rem;
-            color: #d63384;
+        .message-bubble p:first-child {
+            margin-top: 0;
         }
-        .user-message .message-bubble code:not(pre code) {
-            background: rgba(255,255,255,0.15);
-            color: #ffe0b3;
+        
+        .message-bubble p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .message-bubble br {
+            display: block;
+            margin: 8px 0;
+            content: "";
         }
 
         .typing-indicator-minimal {
@@ -442,14 +392,9 @@
             .header-text h2 { font-size: 1.2rem; }
             .messages-area { padding: 16px 12px 12px 12px; gap: 16px; }
             .message { max-width: 92%; }
-            .message-bubble { padding: 10px 14px; font-size: 0.88rem; }
+            .message-bubble { padding: 12px 14px; font-size: 0.92rem; }
             .input-area { padding: 12px 12px 16px 12px; }
             #sendBtn { width: 42px; height: 42px; }
-        }
-
-        @media (min-width: 641px) and (max-width: 900px) {
-            .chat-container { height: 88vh; max-width: 720px; }
-            .message { max-width: 80%; }
         }
     </style>
 </head>
@@ -489,11 +434,10 @@
 <script>
     // ============================================
     // RostOps | AI Бизнес-ассистент
-    // Модель: RostOps-1.1 (через SambaNova API)
-    // AI НЕ пишет код без явной просьбы пользователя
+    // AI НИКОГДА НЕ ПИШЕТ КОД — только текстовые ответы
     // ============================================
     
-    const API_KEY = "bbaaa7f2-ecda-4bbd-8e22-7f6cf32a2ac9";
+    const API_KEY = "673c4cc1-0f8e-4851-bce3-d090a39168d5";
     const API_URL = "https://api.sambanova.ai/v1/chat/completions";
     
     const SYSTEM_PROMPT = `Ты — AI-ассистент RostOps, персональный бизнес-консультант по внедрению искусственного интеллекта и автоматизации.
@@ -507,10 +451,11 @@
 - MLOps и облачные платформы
 - Обучение AI-компетенциям команд
 
-ВАЖНОЕ ПРАВИЛО:
-- НЕ пиши код, если пользователь прямо не попросил об этом (например: "напиши код", "покажи пример кода", "дай код", "пример реализации")
-- Если пользователь не просит код — отвечай обычным текстом, без примеров кода
-- Если пользователь просит код — тогда покажи его в красивом форматировании
+ВАЖНЕЙШЕЕ ПРАВИЛО:
+- НИКОГДА НЕ ПИШИ КОД. Вообще никакой код. Ни в каких ситуациях.
+- Даже если пользователь просит код — вежливо откажись и предложи текстовое описание решения.
+- Отвечай только обычным текстом, без блоков кода, без примеров кода, без инлайн-кода.
+- Используй только обычный текст, жирное выделение и списки.
 
 Остальные правила:
 - Отвечай ТОЛЬКО на русском языке, дружелюбно и профессионально
@@ -520,7 +465,7 @@
 - Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилот от 250 000 ₽
 - Контакты: hello@rostops.ai
 
-Твоя цель — помогать клиентам с AI-решениями для бизнеса.`;
+Твоя цель — помогать клиентам с AI-решениями для бизнеса, используя только текст.`;
 
     let conversationHistory = [];
 
@@ -528,10 +473,11 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // Функция форматирования — жирный текст, списки, абзацы, код (только если есть)
+    // Функция форматирования — только текст, без кода
     function formatMarkdown(text) {
         let safe = text;
         
+        // Экранирование HTML
         safe = safe.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
@@ -546,29 +492,11 @@
         // Курсив
         safe = safe.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
         
-        // Блоки кода
-        const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
-        safe = safe.replace(codeBlockRegex, function(match, lang, code) {
-            const language = lang || 'plaintext';
-            const encodedCode = code.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-            return `<div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span>${language}</span>
-                            <button class="copy-btn" onclick="copyCodeBlock(this)"><i class="far fa-copy"></i> Копировать</button>
-                        </div>
-                        <pre><code class="language-${language}">${encodedCode}</code></pre>
-                    </div>`;
-        });
+        // Удаляем любые блоки кода, если вдруг появятся
+        safe = safe.replace(/```[\s\S]*?```/g, '');
+        safe = safe.replace(/`([^`]+)`/g, '$1');
         
-        // Инлайн-код
-        safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
-        
-        // Списки
+        // Обработка списков и абзацев
         const lines = safe.split('\n');
         let inList = false;
         let listType = null;
@@ -579,22 +507,22 @@
             
             if (line.match(/^[\s]*[•\-*]\s/)) {
                 if (!inList) {
-                    processedLines.push('<ul style="margin: 8px 0 8px 20px;">');
+                    processedLines.push('<ul style="margin: 12px 0 12px 24px;">');
                     inList = true;
                     listType = 'ul';
                 }
                 const content = line.replace(/^[\s]*[•\-*]\s/, '');
-                processedLines.push(`<li style="margin: 4px 0;">${content}</li>`);
+                processedLines.push(`<li style="margin: 6px 0;">${content}</li>`);
             } 
             else if (line.match(/^[\s]*\d+\.\s/)) {
                 if (!inList || listType !== 'ol') {
                     if (inList) processedLines.push('</ul>');
-                    processedLines.push('<ol style="margin: 8px 0 8px 20px;">');
+                    processedLines.push('<ol style="margin: 12px 0 12px 24px;">');
                     inList = true;
                     listType = 'ol';
                 }
                 const content = line.replace(/^[\s]*\d+\.\s/, '');
-                processedLines.push(`<li style="margin: 4px 0;">${content}</li>`);
+                processedLines.push(`<li style="margin: 6px 0;">${content}</li>`);
             }
             else {
                 if (inList) {
@@ -605,7 +533,7 @@
                 if (line.trim() === '') {
                     processedLines.push('<br>');
                 } else {
-                    processedLines.push(`<p style="margin: 8px 0;">${line}</p>`);
+                    processedLines.push(`<p style="margin: 12px 0;">${line}</p>`);
                 }
             }
         }
@@ -615,27 +543,11 @@
         }
         
         let result = processedLines.join('');
-        result = result.replace(/<p style="margin: 8px 0;"><\/p>/g, '');
+        result = result.replace(/<p style="margin: 12px 0;"><\/p>/g, '');
         
         return result;
     }
 
-    window.copyCodeBlock = function(btn) {
-        const wrapper = btn.closest('.code-block-wrapper');
-        const codeElement = wrapper.querySelector('code');
-        const text = codeElement.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> Готово!';
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-            }, 1500);
-        }).catch(() => {
-            alert('Не удалось скопировать');
-        });
-    };
-
-    // Добавление сообщения с форматированием
     function addFormattedMessage(role, text) {
         const container = document.getElementById('messagesArea');
         const messageDiv = document.createElement('div');
@@ -672,10 +584,6 @@
         messageDiv.appendChild(icon);
         messageDiv.appendChild(bubbleWrapper);
         container.appendChild(messageDiv);
-        
-        document.querySelectorAll('.code-block-wrapper pre code').forEach((block) => {
-            hljs.highlightElement(block);
-        });
         
         container.scrollTop = container.scrollHeight;
         messageDiv.style.animation = 'none';
@@ -716,7 +624,6 @@
         }
     }
 
-    // API запрос
     async function callAIAPI(userMessage, history) {
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
@@ -744,22 +651,15 @@
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('API Error:', errorText);
-                return `⚠️ **Ошибка API**\n\nНе удалось подключиться. Проверьте соединение и попробуйте снова.`;
+                return `⚠️ **Ошибка API**\n\nНе удалось подключиться. Попробуйте снова.`;
             }
 
             const data = await response.json();
-            
-            if (data.error) {
-                return `❌ **Ошибка:** ${data.error.message || 'Неизвестная ошибка'}`;
-            }
-            
             return data.choices?.[0]?.message?.content || "❌ Пустой ответ от AI";
             
         } catch (error) {
             console.error('API call failed:', error);
-            return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение и попробуйте ещё раз.";
+            return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение.";
         }
     }
 
@@ -800,7 +700,7 @@
 
         const welcomeMsg = `**Добро пожаловать в RostOps!** 👋
 
-Я **RostOps** — твой персональный AI-ассистент в сфере бизнеса. Помогаю компаниям внедрять искусственный интеллект и автоматизацию.
+Я **RostOps** — твой персональный AI-ассистент в сфере бизнеса.
 
 **С чем я могу помочь:**
 • Разработать стратегию AI-трансформации
@@ -808,7 +708,7 @@
 • Интегрировать AI в CRM/ERP
 • Оценить стоимость и этапы внедрения
 
-**Просто напишите, какая задача вас интересует.** Если нужен будет пример кода — прямо попросите, я покажу.
+Просто напишите, какая задача вас интересует — я отвечу текстом, без кода.
 
 Чем могу быть полезен сегодня? 🚀`;
         
@@ -827,13 +727,7 @@
         userInput.addEventListener('input', autoResize);
         userInput.focus();
         
-        setTimeout(() => {
-            if (window.innerWidth <= 768) {
-                userInput.blur();
-            }
-        }, 100);
-
-        console.log('RostOps AI ассистент запущен');
+        console.log('✅ RostOps AI ассистент запущен');
     }
 
     init();
