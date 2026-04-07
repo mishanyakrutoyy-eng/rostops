@@ -403,12 +403,12 @@
             <h2>RostOps <span style="font-size: 0.7rem; font-weight: 500;">| AI Business Assistant</span></h2>
             <p>
                 <span class="server-badge"><i class="fas fa-server"></i> Test Server 1.823.510</span>
-                <span><i class="fas fa-microchip"></i> RostOps-1.1</span>
+                <span><i class="fas fa-microchip"></i> SambaNova</span>
             </p>
         </div>
         <div class="status-indicator">
             <div class="pulse-dot"></div>
-            <span>Online</span>
+            <span>API Online</span>
         </div>
     </div>
 
@@ -427,13 +427,11 @@
 
 <script>
     // ============================================
-    // RostOps | SambaNova API
-    // 🔑 ВСТАВЬ СВОЙ КЛЮЧ САМБАНОВА СЮДА:
+    // RostOps | SambaNova API — РАБОЧАЯ ВЕРСИЯ
+    // API Key: d1370880-8ba0-459b-aa2b-d730e63b44cb
     // ============================================
     
-    // ⚠️ ВСТАВЬ СВОЙ РАБОЧИЙ КЛЮЧ SambaNova вместо этого:
-    const API_KEY = "f39694dd-d676-4096-ae9b-fd474258ad47";
-    
+    const API_KEY = "d1370880-8ba0-459b-aa2b-d730e63b44cb";
     const API_URL = "https://api.sambanova.ai/v1/chat/completions";
     
     const SYSTEM_PROMPT = `Ты — AI-ассистент RostOps, персональный бизнес-консультант по внедрению искусственного интеллекта и автоматизации.
@@ -447,14 +445,15 @@
 - MLOps и облачные платформы
 - Обучение AI-компетенциям команд
 
-ВАЖНОЕ ПРАВИЛО:
+ВАЖНЫЕ ПРАВИЛА:
 - НИКОГДА НЕ ПИШИ КОД. Только текст, жирное выделение и списки.
-
-Остальные правила:
 - Отвечай ТОЛЬКО на русском языке, дружелюбно и профессионально
 - Используй **жирный текст** для выделения важного
 - Всегда представляйся как ассистент RostOps
-- Контакты: hello@rostops.ai`;
+- Контакты: hello@rostops.ai
+- Если спрашивают о стоимости: отвечай, что стоимость индивидуальная, пилот от 250 000 ₽
+
+Твоя цель — помогать клиентам с AI-решениями для бизнеса.`;
 
     let conversationHistory = [];
 
@@ -585,10 +584,6 @@
     }
 
     async function callAIAPI(userMessage, history) {
-        if (!API_KEY || API_KEY === "f39694dd-d676-4096-ae9b-fd474258ad47") {
-            return "⚠️ **API ключ не настроен!**\n\n🔑 Чтобы получить бесплатный ключ SambaNova:\n\n1. Перейди на [cloud.sambanova.ai](https://cloud.sambanova.ai)\n2. Зарегистрируйся (бесплатно)\n3. Создай API Key\n4. Скопируй ключ и вставь его в код\n\nПосле этого чат заработает! 🚀";
-        }
-        
         const messages = [
             { role: "system", content: SYSTEM_PROMPT },
             ...history.slice(-12).map(msg => ({
@@ -615,19 +610,24 @@
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('API Error:', errorText);
+                const errorData = await response.json().catch(() => ({}));
+                console.error('API Error:', errorData);
+                
                 if (response.status === 401) {
-                    return "❌ **Неверный API ключ!**\n\nКлюч SambaNova не подходит. Получи новый ключ на [cloud.sambanova.ai](https://cloud.sambanova.ai)";
+                    return "❌ **Ошибка авторизации API**\n\nAPI ключ SambaNova недействителен. Проверьте ключ или получите новый на [cloud.sambanova.ai](https://cloud.sambanova.ai)";
                 }
-                return `⚠️ **Ошибка API (${response.status})**\n\nПроверь интернет и попробуй снова!!!.`;
+                if (response.status === 429) {
+                    return "⚠️ **Лимит запросов**\n\nПревышен лимит запросов к API. Попробуйте через минуту.";
+                }
+                return `⚠️ **Ошибка API (${response.status})**\n\nНе удалось получить ответ. Попробуйте позже.`;
             }
 
             const data = await response.json();
             return data.choices?.[0]?.message?.content || "❌ Пустой ответ от AI";
+            
         } catch (error) {
             console.error('API call failed:', error);
-            return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение.";
+            return "⚠️ **Ошибка подключения**\n\nПроверьте интернет-соединение и попробуйте снова.";
         }
     }
 
@@ -695,7 +695,7 @@
         userInput.addEventListener('input', autoResize);
         userInput.focus();
         
-        console.log('✅ RostOps AI ассистент запущен');
+        console.log('✅ RostOps AI ассистент запущен с SambaNova API');
     }
 
     init();
