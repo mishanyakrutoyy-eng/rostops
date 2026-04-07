@@ -620,7 +620,7 @@
                 if (response.status === 401) {
                     return "❌ **Неверный API ключ!**\n\nКлюч SambaNova не подходит. Получи новый ключ на [cloud.sambanova.ai](https://cloud.sambanova.ai)";
                 }
-                return `⚠️ **Ошибка API (${response.status})**\n\nПроверь интернет и попробуй снова.`;
+                return `⚠️ **Ошибка API (${response.status})**\n\nПроверь интернет и попробуй снова!!!.`;
             }
 
             const data = await response.json();
